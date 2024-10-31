@@ -52,7 +52,7 @@ export default function App() {
               <Route path="/users" element={<Users />} />
               <Route path="/snippets" element={<CodeSnippets />} />
               <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="*" element={<Navigate to="/users" />} />
+              <Route path="*" element={<Navigate to="/dashboard" />} />
             </Routes>
           </div>
         </div>
