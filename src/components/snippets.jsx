@@ -22,6 +22,15 @@ const CodeSnippets = () => {
         data = response.data;
         error = response.error;
       }
+      // Query for "pnp" view
+      if (view === 'pnp') {
+        const response = await supabase
+          .from('Code Snippets')
+          .select('id, title, subtitle, prod_enabled, author_id')
+          .eq('source', 'pnp'); // Filter where author_id is not 1, 2, or 3 and prod_enabled = false
+        data = response.data;
+        error = response.error;
+      }
 
       // Query for "Prod Enabled" view
       if (view === 'prod_enabled') {
@@ -91,10 +100,10 @@ const CodeSnippets = () => {
       <h2 className="text-2xl font-bold mb-4">Code Snippets</h2>
       
       {/* Buttons to toggle between views */}
-      <div className="mb-4">
+      <div className="flex space-x-4 mb-4">
         <button
           onClick={() => setView('new')}
-          className={`px-4 py-2 mr-2 ${view === 'new' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-black'} rounded`}
+          className={`px-4 py-2 ${view === 'new' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-black'} rounded`}
         >
           New Snippets
         </button>
@@ -103,6 +112,12 @@ const CodeSnippets = () => {
           className={`px-4 py-2 ${view === 'prod_enabled' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-black'} rounded`}
         >
           Prod Enabled
+        </button>
+        <button
+          onClick={() => setView('pnp')}
+          className={`px-4 py-2 ${view === 'pnp' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-black'} rounded`}
+        >
+          Pnp
         </button>
       </div>
 
