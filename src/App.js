@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { supabase } from "./components/SupabaseClient"; // Corrected path to SupabaseClient
 import Users from "./components/Users"; // Corrected path to Users component
-import CodeSnippets from './components/Snippets'; // Corrected path to Snippets component
+import CodeSnippets from './components/Snippets'; // Ensure 'Snippets' matches the file name
 import Header from "./components/Header"; // Corrected path to Header component
 import Login from './components/Login';  // Corrected path to Login component
 import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
