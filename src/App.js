@@ -3,7 +3,8 @@ import { supabase } from "./components/SupabaseClient"; // Corrected path to Sup
 import Users from "./components/Users"; // Corrected path to Users component
 import CodeSnippets from './components/FXSnippets'; // Ensure 'Snippets' matches the file name
 import Header from "./components/Header"; // Corrected path to Header component
-import Login from './components/Login';  // Corrected path to Login component
+import Login from './components/Login';
+import Sidebar from './components/Sidebar'
 import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
 
 export default function App() {
@@ -43,6 +44,7 @@ export default function App() {
         {/* Pass the handleLogout function to Header */}
         <Header handleLogout={handleLogout} />
         <div className="flex">
+        <Sidebar handleLogout={handleLogout} />
           <div className="flex flex-col w-full h-screen space-y-2">
             <Routes>
               <Route path="/users" element={<Users />} />

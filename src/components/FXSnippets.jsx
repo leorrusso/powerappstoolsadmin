@@ -101,24 +101,21 @@ const CodeSnippets = () => {
       
       {/* Buttons to toggle between views */}
       <div className="flex space-x-4 mb-4">
-        <button
+        <TabButton
           onClick={() => setView('new')}
-          className={`px-4 py-2 ${view === 'new' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-black'} rounded`}
-        >
-          New Snippets
-        </button>
-        <button
+          isActive={view === 'new'}
+          label = 'New Snippets'
+        />
+        <TabButton
           onClick={() => setView('prod_enabled')}
-          className={`px-4 py-2 ${view === 'prod_enabled' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-black'} rounded`}
-        >
-          Prod Enabled
-        </button>
-        <button
+          isActive={view === 'prod_enabled'}
+          label = 'Production'
+        />
+        <TabButton
           onClick={() => setView('pnp')}
-          className={`px-4 py-2 ${view === 'pnp' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-black'} rounded`}
-        >
-          Pnp
-        </button>
+          isActive={view === 'pnp'}
+          label = 'Respository'
+        />
       </div>
 
       {/* Show "No Results" message if there are no snippets */}
@@ -162,5 +159,18 @@ const CodeSnippets = () => {
     </div>
   );
 };
+
+
+
+function TabButton({ onClick, isActive, label }) {
+  return (
+    <button
+      onClick={onClick}
+      className={`px-4 py-2 ${isActive ? 'bg-purple-300 text-purple-700 '  : 'bg-gray-200 text-black hover:bg-purple-300 hover:text-purple-700'} rounded transition-all duration-500 ease-in-out`}
+    >
+      {label}
+    </button>
+  );
+}
 
 export default CodeSnippets;
