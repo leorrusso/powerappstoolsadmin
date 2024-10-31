@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { supabase } from "./components/SupabaseClient"; // Corrected path to SupabaseClient
-import Users from "./components/Users"; // Corrected path to Users component
-import CodeSnippets from './components/FXSnippets'; // Ensure 'Snippets' matches the file name
-import Header from "./components/Header"; // Corrected path to Header component
+import { supabase } from "./components/SupabaseClient"; 
+import Users from "./components/Users"; 
+import CodeSnippets from './components/FXSnippets'; 
+import Dashboard from "./components/Dashboard"
+import Header from "./components/Header"; 
 import Login from './components/Login';
 import Sidebar from './components/Sidebar'
 import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
+
 
 export default function App() {
   const [session, setSession] = useState(null);
@@ -49,6 +51,7 @@ export default function App() {
             <Routes>
               <Route path="/users" element={<Users />} />
               <Route path="/snippets" element={<CodeSnippets />} />
+              <Route path="/dashboard" element={<Dashboard />} />
               <Route path="*" element={<Navigate to="/users" />} />
             </Routes>
           </div>
