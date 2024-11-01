@@ -1,57 +1,109 @@
+import 'react-data-grid/lib/styles.css';
 import React, { useEffect, useState } from 'react';
 import { supabase } from './SupabaseClient';
+import DataGrid from 'react-data-grid';
 
 const Users = () => {
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
 
-    useEffect(()=> {
+    useEffect(() => {
         const fetchUsers = async () => {
             setLoading(true);
-            let data, error;
-
-            const response = await supabase
-            .from('Author')
-            .select('*')
-            .order('name', { ascending: true }); 
-            data = response.data;
-            error = response.error;
+            const { data, error } = await supabase
+                .from('Author')
+                .select('name, email, picture, last_login')
+                .order('name', { ascending: true });
 
             if (error) {
                 console.log('Error fetching data', error);
             } else {
+                console.log(data);
                 setUsers(data);
             }
             setLoading(false);
         };
-        fetchUsers();
-      
-    },[])
 
-    return(
+        fetchUsers();
+    }, []);
+
+    // Define columns for react-data-grid
+    const columns = [
+        {
+            key: 'picture',
+            name: '',
+            width: '48px',
+            editable: false, // Pictures are typically not editable
+            renderCell({ row }) {
+                return (
+                  <div className='w-full flex items-center justify-center'>  
+                  <div
+                    className="w-6 h-6 rounded-full"
+                    style={{
+                      backgroundImage: `url(${row.picture || 'logo192.png'})`,
+                      backgroundSize: 'cover', // Ensures the image covers the entire div
+                      backgroundPosition: 'center', // Centers the image within the div
+                      backgroundRepeat: 'no-repeat' // Prevents the image from repeating
+                    }}
+                  />
+                  </div>
+                );
+              }
+          },
+        {
+            key: 'name',
+            name: 'Name',
+            editable: true, // Make 'Name' field editable
+        },
+        {
+            key: 'email',
+            name: 'E-mail',
+            editable: false, // Make 'E-mail' field editable
+        },
+        {
+            key: 'last_login',
+            name: 'Last Login',
+            editable: true,
+            renderCell ({ row }) {
+                // Parse the date string and format it
+                const date = new Date(row.last_login);
+                const formattedDate = new Intl.DateTimeFormat('en-US', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric',
+                  hour: '2-digit',
+                  minute: '2-digit',
+                  second: '2-digit',
+                  timeZoneName: 'short'
+                }).format(date);
+            
+                return <span>{formattedDate}</span>;
+              }
+        }
+
+    ];
+
+    // Function to handle row updates
+    const handleRowsChange = (updatedRows) => {
+        setUsers(updatedRows);
+    };
+
+    if (loading) {
+        return <div>Loading...</div>;
+    }
+
+    return (
         <div className="container mx-auto p-4">
             <h2 className="text-2xl font-bold mb-4">Users</h2>
-           <table className="table-auto w-full border-collapse border border-gray-200">
-           <thead>
-             <tr className="bg-gray-100">
-               <th className="border px-4 py-2">Name</th>
-               <th className="border px-4 py-2">E-mail</th>
-               <th className="border px-4 py-2">Picture</th>
-             </tr>
-           </thead>
-           <tbody>
-            {users.map((user)=>(
-                  <tr key={user.id} className="hover:bg-gray-50">
-                    <td className="border px-4 py-2">{user.name}</td>
-                    <td className="border px-4 py-2">{user.email}</td>
-                    <td className="border px-4 py-2"><img src={user.picture ? user.picture : "logo192.png"} alt="" height={48} width={48} className='rounded-full'/></td>
-                  </tr>
-            ))}
-            </tbody>
-            </table>
+            <div className="container mx-auto p-4 h-screen">
+                <DataGrid
+                    columns={columns}
+                    rows={users}
+                    onRowsChange={handleRowsChange}
+                />
+            </div>
         </div>
-
-    )
+    );
 };
 
 export default Users;

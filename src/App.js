@@ -8,6 +8,18 @@ import Login from './components/Login';
 import Sidebar from './components/Sidebar'
 import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
 
+if (process.env.NODE_ENV === 'development') {
+  const originalConsoleError = console.error;
+  console.error = (...args) => {
+    if (
+      typeof args[0] === 'string' &&
+      args[0].includes('ResizeObserver loop completed with undelivered notifications')
+    ) {
+      return;
+    }
+    originalConsoleError(...args);
+  };
+}
 
 export default function App() {
   const [session, setSession] = useState(null);
